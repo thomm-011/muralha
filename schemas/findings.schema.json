@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Bastion findings",
+  "type": "object",
+  "required": ["findings"],
+  "properties": {
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "severity", "status"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^F-[0-9]{3,}$" },
+          "title": { "type": "string" },
+          "severity": { "enum": ["critical", "high", "medium", "low", "info"] },
+          "status": { "enum": ["open", "planned", "fixed", "verified", "rejected"] },
+          "location": { "type": "string" },
+          "description": { "type": "string" },
+          "fix": { "type": "string" },
+          "verdict": { "type": "string" }
+        }
+      }
+    }
+  }
+}
