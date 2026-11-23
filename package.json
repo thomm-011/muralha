@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc -w",
-    "test": "npm run build && node --test 'test/*.test.js'",
+    "test": "npm run build && node --test",
     "start": "node dist/cli.js"
   },
   "devDependencies": {
