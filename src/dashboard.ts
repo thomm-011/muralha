@@ -25,6 +25,7 @@ export const PAGE = `<!doctype html>
     margin-bottom:10px; background:var(--card) }
   .f h3 { margin:0 0 4px; font-size:15px }
   .meta { color:var(--mut); font-size:12px; display:flex; gap:12px; flex-wrap:wrap }
+  .cat { font-weight:600; color:var(--fg) }
   .f p { margin:8px 0 0 }
   .sev-critical{border-left-color:var(--critical)} .sev-high{border-left-color:var(--high)}
   .sev-medium{border-left-color:var(--medium)} .sev-low{border-left-color:var(--low)}
@@ -72,6 +73,7 @@ function render(state) {
         el("div", { className: "meta" },
           el("span", { textContent: f.severity }),
           el("span", { textContent: f.status }),
+          ...(f.category ? [el("span", { className: "cat", title: "Categoria OWASP", textContent: f.category })] : []),
           el("span", { textContent: f.location || "" })));
       for (const key of ["description", "fix", "verdict"]) {
         if (f[key]) card.append(el("p", { textContent: (key === "fix" ? "Correção: " : key === "verdict" ? "Veredito: " : "") + f[key] }));
