@@ -15,6 +15,11 @@
           "severity": { "enum": ["critical", "high", "medium", "low", "info"] },
           "status": { "enum": ["open", "planned", "fixed", "verified", "rejected"] },
           "location": { "type": "string" },
+          "category": {
+            "type": "string",
+            "pattern": "^(A(0[1-9]|10)|LLM(0[1-9]|10)):2025$",
+            "description": "Categoria OWASP: A01:2025 a A10:2025 (Top 10) ou LLM01:2025 a LLM10:2025 (Top 10 for LLM Applications)."
+          },
           "description": { "type": "string" },
           "fix": { "type": "string" },
           "verdict": { "type": "string" }

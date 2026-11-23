@@ -16,7 +16,8 @@ Para cada achado com `status: "fixed"`:
 3. **Procure contornos da mesma classe:**
    - outros pontos do código com o mesmo padrão que ficaram sem correção;
    - variações da entrada (codificações, maiúsculas e minúsculas, valores vazios ou muito grandes, caminhos alternativos até o mesmo recurso);
-   - validação feita só no cliente, ou só em uma das rotas que chegam ao mesmo dado.
+   - validação feita só no cliente, ou só em uma das rotas que chegam ao mesmo dado;
+   - **falha aberta:** o que acontece quando a própria correção lança erro ou recebe entrada ausente ou nula? A resposta correta é negar, nunca liberar.
 4. **Procure regressões e superfície nova:** os testes e o lint seguem passando? A correção abriu outro problema (mensagem de erro que vaza detalhe, exceção que derruba o serviço, permissão ampla demais)?
 5. **Dê o veredito** em `.muralha/findings.json`:
    - tudo confere: `status: "verified"` e `verdict` com a evidência (qual teste, qual caminho conferido);
