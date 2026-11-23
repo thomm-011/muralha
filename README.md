@@ -1,3 +1,5 @@
+<p align="center"><img src="assets/banner.svg" alt="Muralha" width="100%"></p>
+
 # Muralha
 
 Copiloto de segurança para quem desenvolve com agentes de IA. Skills em Markdown + dashboard local, sem chave de API.

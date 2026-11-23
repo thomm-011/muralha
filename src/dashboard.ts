@@ -4,6 +4,7 @@ export const PAGE = `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Muralha</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%20role%3D%22img%22%20aria-label%3D%22Muralha%22%3E%3Cstyle%3E.b%7Bfill%3A%231E2A38%7D.a%7Bfill%3A%23E8A317%7D.w%7Bfill%3Anone%3Bstroke%3A%231E2A38%3Bstroke-width%3A5%3Bstroke-linejoin%3Amiter%3Bstroke-linecap%3Abutt%7D%40media%20%28prefers-color-scheme%3Adark%29%7B.b%7Bfill%3A%23C8D1DC%7D.w%7Bstroke%3A%23E6EBF1%7D%7D%3C%2Fstyle%3E%3Crect%20fill%3D%22%231E2A38%22%20x%3D%224%22%20y%3D%224%22%20width%3D%2226%22%20height%3D%2216%22%20rx%3D%222%22%2F%3E%3Crect%20fill%3D%22%231E2A38%22%20x%3D%2234%22%20y%3D%224%22%20width%3D%2226%22%20height%3D%2216%22%20rx%3D%222%22%2F%3E%3Crect%20fill%3D%22%231E2A38%22%20x%3D%224%22%20y%3D%2224%22%20width%3D%2211%22%20height%3D%2216%22%20rx%3D%222%22%2F%3E%3Crect%20fill%3D%22%23E8A317%22%20x%3D%2219%22%20y%3D%2224%22%20width%3D%2226%22%20height%3D%2216%22%20rx%3D%222%22%2F%3E%3Crect%20fill%3D%22%231E2A38%22%20x%3D%2249%22%20y%3D%2224%22%20width%3D%2211%22%20height%3D%2216%22%20rx%3D%222%22%2F%3E%3Crect%20fill%3D%22%231E2A38%22%20x%3D%224%22%20y%3D%2244%22%20width%3D%2226%22%20height%3D%2216%22%20rx%3D%222%22%2F%3E%3Crect%20fill%3D%22%231E2A38%22%20x%3D%2234%22%20y%3D%2244%22%20width%3D%2226%22%20height%3D%2216%22%20rx%3D%222%22%2F%3E%3C%2Fsvg%3E%0A">
 <style>
   :root { --bg:#fff; --fg:#16181d; --mut:#6b7280; --line:#e5e7eb; --card:#f8f9fb;
     --critical:#b91c1c; --high:#c2410c; --medium:#a16207; --low:#1d4ed8; --info:#6b7280; }
@@ -15,7 +16,7 @@ export const PAGE = `<!doctype html>
   body { margin:0; padding:24px 16px; background:var(--bg); color:var(--fg);
     font:14px/1.5 system-ui,sans-serif }
   main { max-width:900px; margin:0 auto }
-  h1 { font-size:20px; margin:0 0 16px }
+  h1 { font-size:20px; margin:0 0 16px; display:flex; align-items:center; gap:10px }
   .stats { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px }
   .stat { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:8px 14px }
   .stat b { display:block; font-size:20px }
@@ -35,7 +36,7 @@ export const PAGE = `<!doctype html>
 </head>
 <body>
 <main>
-  <h1>Muralha</h1>
+  <h1><svg width="28" height="28" viewBox="0 0 64 64" aria-hidden="true"><rect fill="currentColor" x="4" y="4" width="26" height="16" rx="2"/><rect fill="currentColor" x="34" y="4" width="26" height="16" rx="2"/><rect fill="currentColor" x="4" y="24" width="11" height="16" rx="2"/><rect fill="#E8A317" x="19" y="24" width="26" height="16" rx="2"/><rect fill="currentColor" x="49" y="24" width="11" height="16" rx="2"/><rect fill="currentColor" x="4" y="44" width="26" height="16" rx="2"/><rect fill="currentColor" x="34" y="44" width="26" height="16" rx="2"/></svg>Muralha</h1>
   <div class="stats" id="stats"></div>
   <div id="list"></div>
   <details id="charter" hidden><summary>Charter</summary><pre id="charterText"></pre></details>

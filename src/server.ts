@@ -40,7 +40,7 @@ export async function startServer(root: string, port = 4317): Promise<RunningSer
     } else if (url === "/") {
       res.writeHead(200, {
         "content-type": "text/html; charset=utf-8",
-        "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'self'",
+        "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'self'; img-src data:",
       });
       res.end(PAGE);
     } else {
