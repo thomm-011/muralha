@@ -31,6 +31,19 @@ O estado fica em `.muralha/` (`charter.md`, `findings.json`).
 npm install && npm test
 ```
 
+## Relatório nos PRs
+
+`muralha report` lê `.muralha/findings.json` e gera um resumo, sem IA nem chave de API. Serve para o CI mostrar o estado da segurança em cada PR.
+
+```bash
+muralha report                         # resumo em Markdown
+muralha report --format annotations    # comandos de anotação do GitHub Actions
+muralha report --fail-on high          # sai com código 1 se houver achado pendente
+                                       # (aberto ou planejado) high ou critical
+```
+
+Este repositório traz um workflow pronto em `.github/workflows/muralha-report.yml`: ele comenta no PR (atualizando sempre o mesmo comentário), anota os arquivos e reprova o check se houver achado grave pendente. O comentário só é feito em PRs de branches do próprio repositório, porque em PRs de forks o token do GitHub é somente leitura.
+
 ## Instalação como plugin
 
 ```bash

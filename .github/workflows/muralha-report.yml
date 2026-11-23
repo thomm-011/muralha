@@ -1,0 +1,63 @@
+name: Muralha report
+
+# Resumo dos achados de .muralha/findings.json no PR. Só roda o que importa quando
+# o arquivo existe; em PRs de forks o token é somente leitura, então não comenta.
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  report:
+    name: Relatório Muralha
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        if: hashFiles('.muralha/findings.json') != ''
+        with:
+          node-version: 22
+          cache: npm
+      - name: Build
+        if: hashFiles('.muralha/findings.json') != ''
+        run: npm ci && npm run build
+
+      - name: Anotações nos arquivos
+        if: hashFiles('.muralha/findings.json') != ''
+        run: node dist/cli.js report --format annotations
+
+      - name: Gerar relatório
+        id: report
+        if: hashFiles('.muralha/findings.json') != ''
+        run: |
+          set +e
+          node dist/cli.js report --fail-on high > "$RUNNER_TEMP/muralha-report.md"
+          echo "code=$?" >> "$GITHUB_OUTPUT"
+          cat "$RUNNER_TEMP/muralha-report.md" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Comentar no PR
+        if: hashFiles('.muralha/findings.json') != '' && github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          id=$(gh api "repos/$REPO/issues/$PR/comments" --paginate \
+            --jq '.[] | select(.user.login == "github-actions[bot]" and (.body | startswith("<!-- muralha-report -->"))) | .id' | head -n 1)
+          if [ -n "$id" ]; then
+            gh api -X PATCH "repos/$REPO/issues/comments/$id" -F body=@"$RUNNER_TEMP/muralha-report.md" > /dev/null
+          else
+            gh api -X POST "repos/$REPO/issues/$PR/comments" -F body=@"$RUNNER_TEMP/muralha-report.md" > /dev/null
+          fi
+
+      - name: Portão (achados pendentes graves)
+        if: steps.report.outputs.code != '' && steps.report.outputs.code != '0'
+        run: |
+          echo "Há achados pendentes com severidade high ou critical. Veja o relatório do PR."
+          exit 1
