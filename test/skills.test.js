@@ -48,6 +48,21 @@ test("schema aceita category OWASP e o exemplo do detect é válido", () => {
   for (const ok of ["A01:2025", "A10:2025", "LLM06:2025"]) assert.ok(pattern.test(ok), ok);
   for (const bad of ["A11:2025", "A01:2021", "a01:2025"]) assert.ok(!pattern.test(bad), bad);
   const detect = readFileSync(join(root, "muralha-detect", "SKILL.md"), "utf8");
-  const example = JSON.parse(detect.match(/```json\n([\s\S]*?)\n```/)[1]);
-  assert.ok(pattern.test(example.category), "exemplo do detect com category inválida");
+  const file = JSON.parse(detect.match(/```json\n([\s\S]*?)\n```/)[1]);
+  assert.ok(Array.isArray(file.findings), "o exemplo do detect deve ser o arquivo inteiro: objeto com a chave findings");
+  assert.ok(pattern.test(file.findings[0].category), "exemplo do detect com category inválida");
+});
+
+test("nenhuma skill depende de um arquivo de schema que o install não copia", () => {
+  for (const d of dirs) {
+    const text = readFileSync(join(root, d.name, "SKILL.md"), "utf8");
+    assert.ok(!text.includes("schemas/findings.schema.json"), `${d.name} cita schemas/findings.schema.json`);
+  }
+});
+
+test("as skills que editam findings.json explicam o formato do arquivo", () => {
+  for (const name of ["muralha-detect", "muralha-plan", "muralha-harden", "muralha-verify"]) {
+    const text = readFileSync(join(root, name, "SKILL.md"), "utf8");
+    assert.ok(text.includes('"findings"'), `${name} não descreve o formato { "findings": [...] }`);
+  }
 });

@@ -25,6 +25,7 @@ export const PAGE = `<!doctype html>
     margin-bottom:10px; background:var(--card) }
   .f h3 { margin:0 0 4px; font-size:15px }
   .meta { color:var(--mut); font-size:12px; display:flex; gap:12px; flex-wrap:wrap }
+  .warn { border:1px solid var(--high); border-left-width:4px; border-radius:8px; padding:10px 14px; margin-bottom:16px; background:var(--card) }
   .cat { font-weight:600; color:var(--fg) }
   .f p { margin:8px 0 0 }
   .sev-critical{border-left-color:var(--critical)} .sev-high{border-left-color:var(--high)}
@@ -38,6 +39,7 @@ export const PAGE = `<!doctype html>
 <body>
 <main>
   <h1><svg width="28" height="28" viewBox="0 0 64 64" aria-hidden="true"><rect fill="currentColor" x="4" y="4" width="26" height="16" rx="2"/><rect fill="currentColor" x="34" y="4" width="26" height="16" rx="2"/><rect fill="currentColor" x="4" y="24" width="11" height="16" rx="2"/><rect fill="#E8A317" x="19" y="24" width="26" height="16" rx="2"/><rect fill="currentColor" x="49" y="24" width="11" height="16" rx="2"/><rect fill="currentColor" x="4" y="44" width="26" height="16" rx="2"/><rect fill="currentColor" x="34" y="44" width="26" height="16" rx="2"/></svg>Muralha</h1>
+  <div class="warn" id="problems" hidden></div>
   <div class="stats" id="stats"></div>
   <div id="list"></div>
   <details id="charter" hidden><summary>Charter</summary><pre id="charterText"></pre></details>
@@ -55,6 +57,9 @@ function el(tag, props = {}, ...kids) {
 }
 
 function render(state) {
+  const problems = document.getElementById("problems");
+  problems.hidden = !(state.problems && state.problems.length);
+  problems.textContent = problems.hidden ? "" : "Atenção: " + state.problems.join(" ");
   const stats = document.getElementById("stats");
   const list = document.getElementById("list");
   stats.replaceChildren(...STATUS.map(s =>

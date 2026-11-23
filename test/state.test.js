@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { mkdtemp, mkdir, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { parseFindings } from "../dist/state.js";
+import { parseFindings, readFindings } from "../dist/state.js";
 import { startServer } from "../dist/server.js";
 
 test("parseFindings ignora entradas inválidas", () => {
@@ -52,4 +52,37 @@ test("parseFindings mantém categoria válida e descarta a inválida sem perder 
   assert.ok(!("category" in out[1]));
   assert.ok(!("category" in out[2]));
   assert.ok(!("category" in out[3]));
+});
+
+test("readFindings aceita a lista solta no topo (formato que agentes geram)", () => {
+  const raw = JSON.stringify([{ id: "F-001", title: "a", severity: "high", status: "open" }]);
+  const r = readFindings(raw);
+  assert.equal(r.findings.length, 1);
+  assert.deepEqual(r.problems, []);
+});
+
+test("readFindings nunca devolve vazio em silêncio", () => {
+  assert.deepEqual(readFindings(null), { findings: [], problems: [] });
+  assert.equal(readFindings("{quebrado").problems.length, 1);
+  assert.equal(readFindings("").problems.length, 1);
+  assert.equal(readFindings(JSON.stringify({ outra: [] })).problems.length, 1);
+  assert.equal(readFindings(JSON.stringify("texto")).problems.length, 1);
+  const r = readFindings(JSON.stringify({ findings: [{ id: "F-001", title: "ok", severity: "low", status: "open" }, { id: "F-002" }] }));
+  assert.equal(r.findings.length, 1);
+  assert.equal(r.problems.length, 1);
+  assert.match(r.problems[0], /1 achado\(s\) ignorado/);
+});
+
+test("servidor expõe os problemas do findings.json ao dashboard", async () => {
+  const root = await mkdtemp(join(tmpdir(), "muralha-problems-"));
+  await mkdir(join(root, ".muralha"));
+  await writeFile(join(root, ".muralha", "findings.json"), JSON.stringify({ outra: [] }));
+  const s = await startServer(root, 0);
+  try {
+    const body = await (await fetch(`http://127.0.0.1:${s.port}/api/state`)).json();
+    assert.equal(body.findings.length, 0);
+    assert.equal(body.problems.length, 1);
+  } finally {
+    s.close();
+  }
 });

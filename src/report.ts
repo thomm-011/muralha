@@ -67,8 +67,15 @@ export function annotations(findings: Finding[]): string[] {
   return lines;
 }
 
-export function renderMarkdown(findings: Finding[], opts: { failOn?: Severity } = {}): string {
+export function renderMarkdown(findings: Finding[], opts: { failOn?: Severity; problems?: string[] } = {}): string {
   const out: string[] = [MARKER, "## Muralha: relatório de segurança", ""];
+  const problems = opts.problems ?? [];
+  if (problems.length) {
+    out.push("**Atenção: o relatório pode estar incompleto.** Problemas em `.muralha/findings.json`:", "");
+    for (const p of problems) out.push(`- ${escapeMd(p, 300)}`);
+    out.push("");
+  }
+  if (findings.length === 0 && problems.length) return out.join("\n") + "\n";
   if (findings.length === 0) {
     out.push("Nenhum achado registrado em `.muralha/findings.json`.");
     return out.join("\n") + "\n";

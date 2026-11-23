@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
 import { startServer } from "./server.js";
 import { loadState } from "./state.js";
-import { annotations, failing, isSeverity, renderMarkdown, SEVERITIES } from "./report.js";
+import { annotations, escapeCommandData, failing, isSeverity, renderMarkdown, SEVERITIES } from "./report.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const HELP = `muralha — copiloto de segurança para desenvolvimento com agentes de IA
@@ -16,8 +16,9 @@ Uso:
   muralha --port <n>      escolhe a porta (padrão 4317)
   muralha report          resume .muralha/findings.json (para CI e PRs)
       --format <markdown|annotations>   formato da saída (padrão markdown)
-      --fail-on <severidade>            sai com código 1 se houver achado pendente
-                                        nessa severidade ou maior (critical|high|medium|low|info)
+      --fail-on <severidade>            sai com código 1 se houver achado pendente nessa
+                                        severidade ou maior (critical|high|medium|low|info);
+                                        código 2 se o findings.json estiver ilegível
       --dir <pasta>                     projeto a ler (padrão: pasta atual)
   muralha --help
 `;
@@ -47,11 +48,17 @@ async function report(argv: string[]): Promise<number> {
     console.error("--format inválido: use markdown ou annotations.");
     return 2;
   }
-  const { findings } = await loadState(resolve(values.dir));
+  const { findings, problems } = await loadState(resolve(values.dir));
   if (values.format === "annotations") {
+    for (const problem of problems) console.log(`::error title=findings.json::${escapeCommandData(problem)}`);
     for (const line of annotations(findings)) console.log(line);
   } else {
-    process.stdout.write(renderMarkdown(findings, { failOn }));
+    process.stdout.write(renderMarkdown(findings, { failOn, problems }));
+  }
+  // falha fechada: com o portão ligado, um findings.json ilegível nunca conta como "sem achados"
+  if (failOn && problems.length > 0) {
+    for (const problem of problems) console.error(`findings.json: ${problem}`);
+    return 2;
   }
   return failOn && failing(findings, failOn).length > 0 ? 1 : 0;
 }
