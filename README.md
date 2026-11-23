@@ -50,7 +50,7 @@ npx muralha report --fail-on high          # sai com código 1 se houver achado 
                                            # (aberto ou planejado) high ou critical
 ```
 
-Em outro projeto, use o pacote publicado no lugar do build local, de preferência com a versão fixada: `npx --yes muralha@0.1.0 report --fail-on high`.
+Em outro projeto, use o pacote publicado no lugar do build local, de preferência com a versão fixada: `npx --yes muralha@0.1.1 report --fail-on high`.
 
 Este repositório traz um workflow pronto em `.github/workflows/muralha-report.yml`: ele comenta no PR (atualizando sempre o mesmo comentário), anota os arquivos e reprova o check se houver achado grave pendente. A tabela e o dashboard mostram a categoria OWASP de cada achado (campo `category`, como `A01:2025` ou `LLM06:2025`). O comentário só é feito em PRs de branches do próprio repositório, porque em PRs de forks o token do GitHub é somente leitura.
 
