@@ -3,15 +3,22 @@
   "version": "0.1.0",
   "description": "Copiloto de segurança para quem desenvolve com agentes de IA: skills + dashboard local.",
   "license": "Apache-2.0",
+  "author": "thomm-011 (https://github.com/thomm-011)",
+  "homepage": "https://github.com/thomm-011/muralha#readme",
+  "repository": { "type": "git", "url": "git+https://github.com/thomm-011/muralha.git" },
+  "bugs": { "url": "https://github.com/thomm-011/muralha/issues" },
+  "keywords": ["security", "blue-team", "audit", "hardening", "agent-skills", "claude-code", "owasp", "ai-agents"],
   "type": "module",
   "bin": { "muralha": "dist/cli.js" },
   "files": ["dist", "skills", "schemas", ".claude-plugin", ".codex-plugin", ".cursor-plugin", "README.md"],
   "engines": { "node": ">=20" },
+  "publishConfig": { "access": "public" },
   "scripts": {
     "build": "tsc",
     "dev": "tsc -w",
     "test": "npm run build && node --test",
-    "start": "node dist/cli.js"
+    "start": "node dist/cli.js",
+    "prepublishOnly": "npm test"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
