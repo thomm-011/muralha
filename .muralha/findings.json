@@ -1,5 +1,5 @@
 {"findings":[
-{"id":"F-001","title":"Segredo no repositório","severity":"critical","status":"open","location":"src/config.ts:12"},
+{"id":"F-001","title":"Segredo no repositório","severity":"critical","status":"fixed","location":"src/config.ts:12"},
 {"id":"F-002","title":"CORS aberto | <b>qualquer</b> origem @octocat","severity":"medium","status":"planned","location":"src/server.ts:8"},
 {"id":"F-003","title":"Log com dados pessoais","severity":"low","status":"fixed","location":"src/log.ts:3"},
 {"id":"F-004","title":"Hash fraco","severity":"high","status":"verified"}]}
