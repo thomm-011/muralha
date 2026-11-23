@@ -83,3 +83,12 @@ test("CLI report sem findings.json não falha", async () => {
   assert.equal(r.status, 0);
   assert.ok(r.stdout.includes("Nenhum achado"));
 });
+
+test("relatório mostra a categoria (ou '-') e a anotação a inclui", () => {
+  const md = renderMarkdown([f("F-001", "high", "open", { category: "A07:2025" }), f("F-002", "low", "open")]);
+  assert.ok(md.includes("| Categoria |"));
+  assert.ok(/\| F-001 \| high \| A07:2025 \|/.test(md));
+  assert.ok(/\| F-002 \| low \| - \|/.test(md));
+  const [line] = annotations([f("F-001", "high", "open", { category: "A07:2025", location: "a.ts:1" })]);
+  assert.ok(line.includes("title=F-001 (high%2C A07%3A2025)"));
+});

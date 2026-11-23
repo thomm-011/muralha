@@ -42,7 +42,7 @@ muralha report --fail-on high          # sai com código 1 se houver achado pend
                                        # (aberto ou planejado) high ou critical
 ```
 
-Este repositório traz um workflow pronto em `.github/workflows/muralha-report.yml`: ele comenta no PR (atualizando sempre o mesmo comentário), anota os arquivos e reprova o check se houver achado grave pendente. O comentário só é feito em PRs de branches do próprio repositório, porque em PRs de forks o token do GitHub é somente leitura.
+Este repositório traz um workflow pronto em `.github/workflows/muralha-report.yml`: ele comenta no PR (atualizando sempre o mesmo comentário), anota os arquivos e reprova o check se houver achado grave pendente. A tabela e o dashboard mostram a categoria OWASP de cada achado (campo `category`, como `A01:2025` ou `LLM06:2025`). O comentário só é feito em PRs de branches do próprio repositório, porque em PRs de forks o token do GitHub é somente leitura.
 
 ## Instalação como plugin
 

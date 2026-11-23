@@ -36,3 +36,20 @@ test("servidor expõe o estado", async () => {
     s.close();
   }
 });
+
+test("parseFindings mantém categoria válida e descarta a inválida sem perder o achado", () => {
+  const raw = JSON.stringify({
+    findings: [
+      { id: "F-001", title: "a", severity: "high", status: "open", category: "A07:2025" },
+      { id: "F-002", title: "b", severity: "low", status: "open", category: "A99:2025" },
+      { id: "F-003", title: "c", severity: "low", status: "open", category: 42 },
+      { id: "F-004", title: "d", severity: "low", status: "open" },
+    ],
+  });
+  const out = parseFindings(raw);
+  assert.equal(out.length, 4);
+  assert.equal(out[0].category, "A07:2025");
+  assert.ok(!("category" in out[1]));
+  assert.ok(!("category" in out[2]));
+  assert.ok(!("category" in out[3]));
+});

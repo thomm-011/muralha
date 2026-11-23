@@ -60,7 +60,7 @@ export function annotations(findings: Finding[]): string[] {
     const loc = parseLocation(f.location);
     if (!loc) continue;
     const level = rank(f.severity) <= rank("high") ? "error" : rank(f.severity) <= rank("medium") ? "warning" : "notice";
-    const title = escapeCommandProperty(`${f.id} (${f.severity})`);
+    const title = escapeCommandProperty(`${f.id} (${f.severity}${f.category ? `, ${f.category}` : ""})`);
     const file = escapeCommandProperty(loc.file);
     lines.push(`::${level} file=${file},line=${loc.line},title=${title}::${escapeCommandData(f.title)}`);
   }
@@ -80,9 +80,9 @@ export function renderMarkdown(findings: Finding[], opts: { failOn?: Severity } 
 
   const pending = findings.filter(isPending).sort((a, b) => rank(a.severity) - rank(b.severity));
   if (pending.length) {
-    out.push("### Achados pendentes", "", "| ID | Severidade | Título | Local | Status |", "| --- | --- | --- | --- | --- |");
+    out.push("### Achados pendentes", "", "| ID | Severidade | Categoria | Título | Local | Status |", "| --- | --- | --- | --- | --- | --- |");
     for (const f of pending.slice(0, MAX_ROWS)) {
-      out.push(`| ${escapeMd(f.id, 20)} | ${f.severity} | ${escapeMd(f.title)} | ${escapeMd(f.location, 80)} | ${f.status} |`);
+      out.push(`| ${escapeMd(f.id, 20)} | ${f.severity} | ${escapeMd(f.category, 20) || "-"} | ${escapeMd(f.title)} | ${escapeMd(f.location, 80)} | ${f.status} |`);
     }
     if (pending.length > MAX_ROWS) out.push("", `… e mais ${pending.length - MAX_ROWS} achados pendentes.`);
     out.push("");
