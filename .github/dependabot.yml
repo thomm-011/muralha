@@ -7,6 +7,11 @@ updates:
     groups:
       dev-dependencies:
         dependency-type: development
+    ignore:
+      # Os tipos devem acompanhar o Node mínimo suportado (engines: >=20),
+      # não o Node mais recente. Atualizações minor e patch continuam.
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: github-actions
     directory: /
     schedule:
