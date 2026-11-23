@@ -3,7 +3,7 @@ export const PAGE = `<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Bastion</title>
+<title>Muralha</title>
 <style>
   :root { --bg:#fff; --fg:#16181d; --mut:#6b7280; --line:#e5e7eb; --card:#f8f9fb;
     --critical:#b91c1c; --high:#c2410c; --medium:#a16207; --low:#1d4ed8; --info:#6b7280; }
@@ -35,7 +35,7 @@ export const PAGE = `<!doctype html>
 </head>
 <body>
 <main>
-  <h1>Bastion</h1>
+  <h1>Muralha</h1>
   <div class="stats" id="stats"></div>
   <div id="list"></div>
   <details id="charter" hidden><summary>Charter</summary><pre id="charterText"></pre></details>
@@ -63,7 +63,7 @@ function render(state) {
   const sorted = [...state.findings].sort((a, b) => ORDER[a.severity] - ORDER[b.severity]);
   if (!sorted.length) {
     list.replaceChildren(el("div", { className: "empty",
-      textContent: "Nenhum achado ainda. Rode /bastion-charter e /bastion-detect no seu agente." }));
+      textContent: "Nenhum achado ainda. Rode /muralha-charter e /muralha-detect no seu agente." }));
   } else {
     list.replaceChildren(...sorted.map(f => {
       const card = el("div", { className: "f sev-" + f.severity },

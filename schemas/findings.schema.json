@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Bastion findings",
+  "title": "Muralha findings",
   "type": "object",
   "required": ["findings"],
   "properties": {

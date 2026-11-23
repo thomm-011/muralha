@@ -1,11 +1,11 @@
 ---
-name: bastion
+name: muralha
 description: Constrói o que o usuário pede aplicando endurecimento de segurança enquanto escreve o código.
 ---
 
-# Bastion (build)
+# Muralha (build)
 
-Antes de escrever código, leia `.bastion/charter.md`. Se não existir, sugira `/bastion-charter`.
+Antes de escrever código, leia `.muralha/charter.md`. Se não existir, sugira `/muralha-charter`.
 
 Ao implementar:
 - Valide e normalize toda entrada externa; prefira allowlists.

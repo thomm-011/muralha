@@ -20,7 +20,7 @@ export interface State {
   findings: Finding[];
 }
 
-export const STATE_DIR = ".bastion";
+export const STATE_DIR = ".muralha";
 
 const SEVERITIES = ["critical", "high", "medium", "low", "info"];
 const STATUSES = ["open", "planned", "fixed", "verified", "rejected"];

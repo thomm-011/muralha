@@ -20,10 +20,10 @@ test("parseFindings ignora entradas inválidas", () => {
 });
 
 test("servidor expõe o estado", async () => {
-  const root = await mkdtemp(join(tmpdir(), "bastion-"));
-  await mkdir(join(root, ".bastion"));
+  const root = await mkdtemp(join(tmpdir(), "muralha-"));
+  await mkdir(join(root, ".muralha"));
   await writeFile(
-    join(root, ".bastion", "findings.json"),
+    join(root, ".muralha", "findings.json"),
     JSON.stringify({ findings: [{ id: "F-001", title: "x", severity: "low", status: "open" }] }),
   );
   const s = await startServer(root, 0);

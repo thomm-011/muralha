@@ -1,9 +1,9 @@
 ---
-name: bastion-verify
+name: muralha-verify
 description: Confirma se cada correção realmente funciona e registra o veredito.
 ---
 
-# Bastion Verify
+# Muralha Verify
 
 Para cada achado `fixed`:
 1. Releia o código corrigido e tente reproduzir o problema original.

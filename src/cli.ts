@@ -5,13 +5,13 @@ import { fileURLToPath } from "node:url";
 import { startServer } from "./server.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
-const HELP = `bastion — copiloto de segurança para desenvolvimento com agentes de IA
+const HELP = `muralha — copiloto de segurança para desenvolvimento com agentes de IA
 
 Uso:
-  bastion                 abre o dashboard local
-  bastion install [dir]   copia as skills para <dir>/.claude/skills (padrão: projeto atual)
-  bastion --port <n>      escolhe a porta (padrão 4317)
-  bastion --help
+  muralha                 abre o dashboard local
+  muralha install [dir]   copia as skills para <dir>/.claude/skills (padrão: projeto atual)
+  muralha --port <n>      escolhe a porta (padrão 4317)
+  muralha --help
 `;
 
 async function install(target: string): Promise<void> {
@@ -38,7 +38,7 @@ async function main(): Promise<void> {
     process.exit(1);
   }
   const { port: actual } = await startServer(process.cwd(), port);
-  console.log(`Bastion rodando em http://127.0.0.1:${actual}  (Ctrl+C para sair)`);
+  console.log(`Muralha rodando em http://127.0.0.1:${actual}  (Ctrl+C para sair)`);
 }
 
 main().catch((err) => {
