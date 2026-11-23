@@ -31,7 +31,7 @@ Stack, onde roda, quem usa, suposições assumidas.
 O que precisa ser protegido, em ordem de importância.
 
 ## Ameaças prováveis
-Quem ataca e como, em frases curtas (ex.: "visitante anônimo explorando o formulário de upload").
+Quem ataca e como, em frases curtas (ex.: "visitante anônimo explorando o formulário de upload"). Inclua também como um usuário legítimo poderia **abusar dos fluxos de negócio** (redefinir a senha de outra pessoa, repetir um cupom).
 
 ## Regras
 - R-01 Nenhum segredo no repositório ou nos logs. Verificação: busca por chaves/tokens; configuração vem de variáveis de ambiente.
@@ -41,5 +41,5 @@ Quem ataca e como, em frases curtas (ex.: "visitante anônimo explorando o formu
 O que esta revisão não cobre.
 ```
 
-5. **Regras boas** são específicas ao projeto, têm ID estável (`R-01`, `R-02`...), dizem como verificar e cabem em uma linha. Entre 6 e 15 regras costuma bastar. Cubra, quando aplicável: segredos, validação de entrada, autenticação e autorização, proteção de dados, dependências, configuração e deploy, logs e erros.
+5. **Regras boas** são específicas ao projeto, têm ID estável (`R-01`, `R-02`...), dizem como verificar e cabem em uma linha. Entre 6 e 15 regras costuma bastar. Cubra, quando aplicável, as áreas do [OWASP Top 10:2025](https://top10.owasp.org/2025/): controle de acesso, configuração, **cadeia de suprimentos e CI/CD**, criptografia, injeção, **projeto e abuso de fluxos**, autenticação, integridade de dados, logs e alertas, e **tratamento de erros e condições excepcionais**. Se o projeto usa modelos ou agentes de IA, inclua regras para o conteúdo externo que chega ao prompt e para as permissões do agente.
 6. **Termine** mostrando o resumo (ativos, ameaças, número de regras) e sugerindo `/muralha-detect`.

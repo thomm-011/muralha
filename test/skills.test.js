@@ -27,3 +27,27 @@ for (const d of dirs) {
     }
   });
 }
+
+test("guia OWASP cobre A01 a A10 e o Top 10 para LLMs", () => {
+  const guide = readFileSync(join(root, "muralha-detect", "references", "owasp-top-10-2025.md"), "utf8");
+  for (let i = 1; i <= 10; i++) {
+    const code = `A${String(i).padStart(2, "0")}`;
+    assert.ok(new RegExp(`\\| ${code} \\|`).test(guide), `categoria ${code} ausente no guia`);
+  }
+  for (const code of ["LLM01", "LLM05", "LLM06", "LLM10"]) assert.ok(guide.includes(code), `${code} ausente`);
+});
+
+test("checklist referencia as categorias novas de 2025 (A03, A06, A10)", () => {
+  const checklist = readFileSync(join(root, "muralha", "references", "checklist.md"), "utf8");
+  for (const code of ["A03", "A06", "A10"]) assert.ok(checklist.includes(code), `${code} ausente no checklist`);
+});
+
+test("schema aceita category OWASP e o exemplo do detect é válido", () => {
+  const schema = JSON.parse(readFileSync(new URL("../schemas/findings.schema.json", import.meta.url), "utf8"));
+  const pattern = new RegExp(schema.properties.findings.items.properties.category.pattern);
+  for (const ok of ["A01:2025", "A10:2025", "LLM06:2025"]) assert.ok(pattern.test(ok), ok);
+  for (const bad of ["A11:2025", "A01:2021", "a01:2025"]) assert.ok(!pattern.test(bad), bad);
+  const detect = readFileSync(join(root, "muralha-detect", "SKILL.md"), "utf8");
+  const example = JSON.parse(detect.match(/```json\n([\s\S]*?)\n```/)[1]);
+  assert.ok(pattern.test(example.category), "exemplo do detect com category inválida");
+});
