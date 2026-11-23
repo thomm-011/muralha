@@ -6,6 +6,8 @@ Copiloto de segurança para quem desenvolve com agentes de IA. Skills em Markdow
 
 ## Fluxo
 
+<p align="center"><img src="assets/flow.gif" alt="Fluxo do Muralha: charter, detect, plan, harden e verify" width="720"></p>
+
 1. `/muralha-charter`: define as regras de segurança do projeto
 2. `/muralha-detect`: mapeia o sistema e registra os riscos
 3. `/muralha-plan`: plano de correção
