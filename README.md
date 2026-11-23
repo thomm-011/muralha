@@ -26,3 +26,13 @@ O estado fica em `.muralha/` (`charter.md`, `findings.json`).
 ```bash
 npm install && npm test
 ```
+
+## Instalação como plugin
+
+```bash
+# Claude Code
+claude plugin marketplace add thomm-011/muralha
+claude plugin install muralha@muralha
+```
+
+Manifests para Codex e Cursor ficam em `.codex-plugin/` e `.cursor-plugin/`.

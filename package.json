@@ -5,7 +5,7 @@
   "license": "Apache-2.0",
   "type": "module",
   "bin": { "muralha": "dist/cli.js" },
-  "files": ["dist", "skills", "schemas", "README.md"],
+  "files": ["dist", "skills", "schemas", ".claude-plugin", ".codex-plugin", ".cursor-plugin", "README.md"],
   "engines": { "node": ">=20" },
   "scripts": {
     "build": "tsc",

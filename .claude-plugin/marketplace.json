@@ -1,0 +1,14 @@
+{
+  "name": "muralha",
+  "description": "Skills de segurança do Muralha.",
+  "owner": { "name": "thomm-011" },
+  "plugins": [
+    {
+      "name": "muralha",
+      "source": "./",
+      "description": "Copiloto de segurança para quem desenvolve com agentes de IA: defina regras, detecte riscos, corrija e verifique.",
+      "category": "security",
+      "tags": ["security", "blue-team", "audit", "hardening", "agent-skills"]
+    }
+  ]
+}

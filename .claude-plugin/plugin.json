@@ -1,0 +1,9 @@
+{
+  "name": "muralha",
+  "version": "0.1.0",
+  "description": "Copiloto de segurança para quem desenvolve com agentes de IA: defina regras, detecte riscos, corrija e verifique.",
+  "author": { "name": "thomm-011", "url": "https://github.com/thomm-011" },
+  "repository": "https://github.com/thomm-011/muralha",
+  "license": "Apache-2.0",
+  "keywords": ["security", "blue-team", "audit", "hardening", "agent-skills"]
+}
