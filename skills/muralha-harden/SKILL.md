@@ -7,6 +7,8 @@ description: Aplica a correção de um achado planejado por vez, com teste e mud
 
 Corrija **um** achado por execução. Isso mantém cada mudança pequena, revisável e fácil de desfazer.
 
+O arquivo `.muralha/findings.json` é um objeto `{ "findings": [ ... ] }`. Ao editá-lo, mantenha essa estrutura e altere só os campos do achado em questão.
+
 ## Passos
 
 1. **Escolha o próximo achado** `planned` de maior severidade (respeitando as dependências do plano). Leia o `fix` e o local indicado.

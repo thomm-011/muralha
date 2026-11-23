@@ -7,6 +7,8 @@ description: Confirma se cada correção realmente funciona, procura contornos e
 
 Uma correção só vale se resiste a uma segunda olhada cética. Trate cada achado `fixed` como se outra pessoa tivesse feito a correção e você precisasse convencer-se de que ela funciona.
 
+O arquivo `.muralha/findings.json` é um objeto `{ "findings": [ ... ] }`. Ao editá-lo, mantenha essa estrutura e altere só os campos do achado em questão.
+
 ## Passos
 
 Para cada achado com `status: "fixed"`:

@@ -30,21 +30,25 @@ Esta etapa não altera código do projeto, só `.muralha/findings.json`.
    - `medium`: exige condições específicas ou tem impacto limitado.
    - `low`: endurecimento recomendado, sem caminho claro de abuso.
    - `info`: observação ou suspeita não confirmada.
-6. **Registre em `.muralha/findings.json`** seguindo `schemas/findings.schema.json`. Crie o arquivo se não existir; se existir, **não duplique** achados já registrados (reaproveite o ID) e nunca altere o `status` de um achado existente.
+6. **Registre em `.muralha/findings.json`.** O arquivo é **um objeto com a chave `findings`, que é uma lista**. Não grave a lista solta no topo: as ferramentas do Muralha (`muralha report`, o dashboard e o CI) só leem este formato. Se o arquivo não existir, crie-o; se existir, leia, acrescente e grave de volta, **sem duplicar** achados já registrados (reaproveite o ID) e sem alterar o `status` de um achado existente.
 
 ```json
 {
-  "id": "F-001",
-  "title": "Segredo no repositório",
-  "severity": "critical",
-  "status": "open",
-  "category": "A07:2025",
-  "location": "src/config.ts:12",
-  "description": "A chave da API de pagamentos está em texto puro e é commitada. Qualquer pessoa com acesso ao repositório pode usá-la. Viola R-01."
+  "findings": [
+    {
+      "id": "F-001",
+      "title": "Segredo no repositório",
+      "severity": "critical",
+      "status": "open",
+      "category": "A07:2025",
+      "location": "src/config.ts:12",
+      "description": "A chave da API de pagamentos está em texto puro e é commitada. Qualquer pessoa com acesso ao repositório pode usá-la. Viola R-01."
+    }
+  ]
 }
 ```
 
-   Use IDs sequenciais (`F-001`, `F-002`...). Escreva `title` e `description` em linguagem simples, citando a regra do charter violada. Preencha `category` com o código OWASP (`A01:2025` a `A10:2025`, ou `LLM01:2025` a `LLM10:2025`); se nenhuma categoria couber, omita o campo.
+   Campos de cada achado: `id` (`F-001`, `F-002`... em sequência), `title`, `severity` (`critical`, `high`, `medium`, `low` ou `info`), `status` (sempre `open` ao registrar), `location` (`arquivo:linha`), `description` e, opcionalmente, `category`. Escreva `title` e `description` em linguagem simples, citando a regra do charter violada. Preencha `category` com o código OWASP (`A01:2025` a `A10:2025`, ou `LLM01:2025` a `LLM10:2025`); se nenhuma couber, omita o campo. Senha ou segredo fixo no código é **A07** (credenciais); chave criptográfica fixa é **A04**.
 7. **Termine** com uma tabela curta (ID, severidade, título, local) e sugira `/muralha-plan`.
 
 ## Evite

@@ -9,6 +9,8 @@ Transforme os achados em um plano que dê para executar uma correção por vez, 
 
 Esta etapa não altera código, só `.muralha/findings.json`.
 
+O arquivo `.muralha/findings.json` é um objeto `{ "findings": [ ... ] }`. Ao editá-lo, mantenha essa estrutura e altere só os campos do achado em questão.
+
 ## Passos
 
 1. **Leia `.muralha/findings.json` e o charter.** Considere só os achados `open`. Se não houver, diga isso e pare.

@@ -92,3 +92,26 @@ test("relatório mostra a categoria (ou '-') e a anotação a inclui", () => {
   const [line] = annotations([f("F-001", "high", "open", { category: "A07:2025", location: "a.ts:1" })]);
   assert.ok(line.includes("title=F-001 (high%2C A07%3A2025)"));
 });
+
+test("CLI report: findings.json ilegível falha fechado com --fail-on (código 2)", async () => {
+  for (const content of ["{quebrado", JSON.stringify({ outra: [] }), JSON.stringify({ findings: [{ id: "F-001" }] })]) {
+    const dir = await mkdtemp(join(tmpdir(), "muralha-bad-"));
+    await mkdir(join(dir, ".muralha"));
+    await writeFile(join(dir, ".muralha", "findings.json"), content);
+    const gate = cli("report", "--dir", dir, "--fail-on", "high");
+    assert.equal(gate.status, 2, `deveria falhar fechado para: ${content}`);
+    assert.match(gate.stdout, /Atenção: o relatório pode estar incompleto/);
+    assert.equal(cli("report", "--dir", dir).status, 0, "sem --fail-on o relatório só avisa");
+    assert.match(cli("report", "--dir", dir, "--format", "annotations").stdout, /^::error title=findings.json::/);
+  }
+});
+
+test("CLI report lê a lista solta no topo e aplica o portão (o bug do formato)", async () => {
+  const dir = await mkdtemp(join(tmpdir(), "muralha-array-"));
+  await mkdir(join(dir, ".muralha"));
+  await writeFile(join(dir, ".muralha", "findings.json"), JSON.stringify([f("F-001", "critical", "open")]));
+  const r = cli("report", "--dir", dir, "--fail-on", "high");
+  assert.equal(r.status, 1);
+  assert.ok(r.stdout.includes("F-001"));
+  assert.ok(!r.stdout.includes("Nenhum achado registrado"));
+});

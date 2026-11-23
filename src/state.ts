@@ -19,6 +19,7 @@ export interface Finding {
 export interface State {
   charter: string | null;
   findings: Finding[];
+  problems: string[];
 }
 
 export const STATE_DIR = ".muralha";
@@ -37,29 +38,56 @@ async function readOptional(path: string): Promise<string | null> {
   }
 }
 
-export function parseFindings(raw: string | null): Finding[] {
-  if (!raw) return [];
+export interface ParseResult {
+  findings: Finding[];
+  /** Problemas que tornam o relatório incompleto ou não confiável. */
+  problems: string[];
+}
+
+const isFinding = (f: unknown): f is Finding =>
+  !!f &&
+  typeof (f as Finding).id === "string" &&
+  typeof (f as Finding).title === "string" &&
+  SEVERITIES.includes((f as Finding).severity) &&
+  STATUSES.includes((f as Finding).status);
+
+// categoria inválida não derruba o achado: só é descartada
+function cleanCategory(f: Finding): Finding {
+  if (f.category === undefined || (typeof f.category === "string" && CATEGORY_PATTERN.test(f.category))) return f;
+  const { category: _invalid, ...rest } = f;
+  return rest;
+}
+
+/**
+ * Lê o conteúdo de findings.json. Aceita `{ "findings": [...] }` e também uma lista no topo
+ * (formato que agentes costumam gerar). Nunca devolve "vazio" em silêncio: tudo que não
+ * puder ser lido vira um problema explícito.
+ */
+export function readFindings(raw: string | null): ParseResult {
+  if (raw === null) return { findings: [], problems: [] };
+  let data: unknown;
   try {
-    const data = JSON.parse(raw);
-    const list: unknown[] = Array.isArray(data?.findings) ? data.findings : [];
-    return list
-      .filter(
-        (f): f is Finding =>
-          !!f &&
-          typeof (f as Finding).id === "string" &&
-          typeof (f as Finding).title === "string" &&
-          SEVERITIES.includes((f as Finding).severity) &&
-          STATUSES.includes((f as Finding).status),
-      )
-      .map((f) => {
-        // categoria inválida não derruba o achado: só é descartada
-        if (f.category === undefined || (typeof f.category === "string" && CATEGORY_PATTERN.test(f.category))) return f;
-        const { category: _invalid, ...rest } = f;
-        return rest;
-      });
+    data = JSON.parse(raw);
   } catch {
-    return [];
+    return { findings: [], problems: ["findings.json não é um JSON válido."] };
   }
+  const wrapped = (data as { findings?: unknown } | null)?.findings;
+  const list: unknown[] | null = Array.isArray(data) ? data : Array.isArray(wrapped) ? wrapped : null;
+  if (!list) {
+    return { findings: [], problems: ['findings.json deve ser um objeto com a chave "findings" (uma lista de achados).'] };
+  }
+  const findings = list.filter(isFinding).map(cleanCategory);
+  const skipped = list.length - findings.length;
+  return {
+    findings,
+    problems: skipped
+      ? [`${skipped} achado(s) ignorado(s) por campos inválidos (id, title, severity e status são obrigatórios).`]
+      : [],
+  };
+}
+
+export function parseFindings(raw: string | null): Finding[] {
+  return readFindings(raw).findings;
 }
 
 export async function loadState(root: string): Promise<State> {
@@ -68,5 +96,6 @@ export async function loadState(root: string): Promise<State> {
     readOptional(join(dir, "charter.md")),
     readOptional(join(dir, "findings.json")),
   ]);
-  return { charter, findings: parseFindings(findings) };
+  const read = readFindings(findings);
+  return { charter, findings: read.findings, problems: read.problems };
 }
